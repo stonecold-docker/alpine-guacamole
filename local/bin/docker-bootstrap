@@ -1,0 +1,32 @@
+#!/bin/sh
+
+set -e
+
+if [ -e /.init ]; then
+	exit
+fi
+
+touch /.init
+
+mkdir -p /conf.d /conf.d/postgresql
+
+chown -R postgres:postgres /conf.d/postgresql
+if [ ! -e /conf.d/postgresql/base ]; then
+	rm -rf /conf.d/postgresql/*
+
+	cat << 'EOF' > /usr/local/bin/locale
+#!/bin/sh
+echo > /dev/null
+EOF
+	chmod 755 /usr/local/bin/locale
+	su-exec postgres pg_ctl initdb -D /conf.d/postgresql
+	rm -rf /usr/local/bin/locale
+	su-exec postgres pg_ctl start -D /conf.d/postgresql
+	su-exec postgres createdb guacamole_db
+	for sql in /app/guacamole/schema/*.sql
+	do
+		su-exec postgres psql -d guacamole_db -f ${sql}
+	done
+	su-exec postgres pg_ctl stop -D /conf.d/postgresql
+fi
+

@@ -1,0 +1,3 @@
+guacd: /usr/local/bin/start_guacd.sh
+postgresql: /usr/local/bin/start_postgresql.sh
+tomcat: /usr/local/bin/start_tomcat.sh
