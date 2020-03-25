@@ -1,3 +1,5 @@
+ARG BUILD_ARCH=aarch64
+
 FROM forumi0721alpineaarch64/alpine-aarch64-tomcat:latest
 
 LABEL maintainer="forumi0721@gmail.com"
@@ -13,4 +15,6 @@ RUN ["docker-build-end"]
 ENTRYPOINT ["docker-run"]
 
 EXPOSE 8080/tcp
+
+VOLUME /conf.d
 

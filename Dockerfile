@@ -1,3 +1,5 @@
+ARG BUILD_ARCH=x64
+
 FROM forumi0721alpinex64/alpine-x64-tomcat:latest
 
 LABEL maintainer="forumi0721@gmail.com"
@@ -13,4 +15,6 @@ RUN ["docker-init"]
 ENTRYPOINT ["docker-run"]
 
 EXPOSE 8080/tcp
+
+VOLUME /conf.d
 
