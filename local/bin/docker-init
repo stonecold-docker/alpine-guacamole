@@ -24,8 +24,13 @@ echo
 echo "[$(TZ="GMT-9" date '+%Y-%m-%d %H:%M:%S')] ==> Installing guacamole"
 mkdir -p /app/guacamole /app/guacamole/extensions /app/guacamole/lib
 cd /app/guacamole
-wget --no-check-certificate -q -O guacamole-${GUACAMOLE_VERSION} "${GUACAMOLE_URL}"
-ln -sf guacamole-1.1.0 /app/guacamole/ROOT.war
+wget --no-check-certificate -q -O guacamole.zip "${GUACAMOLE_URL}"
+mkdir -p ROOT
+cd /app/guacamole/ROOT
+unzip -qq ../guacamole.zip
+cd /app/guacamole
+rm -rf guacamole.zip
+touch guacamole-${GUACAMOLE_VERSION}
 wget --no-check-certificate -q -O - "${GUACAMOLE_AUTH_URL}" | tar zx
 mv /app/guacamole/guacamole-auth-jdbc-*/postgresql/guacamole-auth-jdbc-postgresql-*.jar /app/guacamole/extensions/
 mv /app/guacamole/guacamole-auth-jdbc-*/postgresql/schema /app/guacamole/
