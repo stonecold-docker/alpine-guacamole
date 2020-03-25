@@ -3,7 +3,7 @@
 set -e
 
 echo "[$(TZ="GMT-9" date '+%Y-%m-%d %H:%M:%S')] ==> Installing required packages"
-PKG_LIB="goreman su-exec guacamole-server guacamole-server-dev postgresql java-postgresql-jdbc"
+PKG_LIB="goreman su-exec guacamole-server guacamole-server-dev jetty-runner postgresql java-postgresql-jdbc"
 PKG_DEV="p7zip mkfontscale"
 docker-install -r -u ${PKG_LIB} ${PKG_DEV}
 mkdir -p /run/postgresql
@@ -24,13 +24,7 @@ echo
 echo "[$(TZ="GMT-9" date '+%Y-%m-%d %H:%M:%S')] ==> Installing guacamole"
 mkdir -p /app/guacamole /app/guacamole/extensions /app/guacamole/lib
 cd /app/guacamole
-wget --no-check-certificate -q -O guacamole.zip "${GUACAMOLE_URL}"
-mkdir -p ROOT
-cd /app/guacamole/ROOT
-unzip -qq ../guacamole.zip
-cd /app/guacamole
-rm -rf guacamole.zip
-touch guacamole-${GUACAMOLE_VERSION}
+wget --no-check-certificate -q -O guacamole-${GUACAMOLE_VERSION}.war "${GUACAMOLE_URL}"
 wget --no-check-certificate -q -O - "${GUACAMOLE_AUTH_URL}" | tar zx
 mv /app/guacamole/guacamole-auth-jdbc-*/postgresql/guacamole-auth-jdbc-postgresql-*.jar /app/guacamole/extensions/
 mv /app/guacamole/guacamole-auth-jdbc-*/postgresql/schema /app/guacamole/
@@ -115,9 +109,6 @@ echo "[$(TZ="GMT-9" date '+%Y-%m-%d %H:%M:%S')] ==> OK"
 echo
 
 echo "[$(TZ="GMT-9" date '+%Y-%m-%d %H:%M:%S')] ==> Setting basic configurations"
-rm -rf /app/apache-tomcat/conf
-mv /app/apache-tomcat/conf.ORG /app/apache-tomcat/conf
-sed -i -e "s@appBase=\"webapps\"@appBase=\"/app/guacamole\"@g" /app/apache-tomcat/conf/server.xml
 mkdir -p /conf.d /conf.d/postgresql
 echo "[$(TZ="GMT-9" date '+%Y-%m-%d %H:%M:%S')] ==> OK"
 echo
