@@ -3,8 +3,9 @@
 set -e
 
 echo "[$(TZ="GMT-9" date '+%Y-%m-%d %H:%M:%S')] ==> Installing required packages"
-PKG_LIB="goreman su-exec guacamole-server guacamole-server-dev jetty-runner postgresql java-postgresql-jdbc"
-PKG_DEV="p7zip mkfontscale"
+PKG_LIB="goreman su-exec guacamole-server guacamole-server-dev jetty-runner postgresql java-postgresql-jdbc ttf-dejavu"
+#PKG_DEV="p7zip mkfontscale"
+PKG_DEV="p7zip"
 docker-install -r -u ${PKG_LIB} ${PKG_DEV}
 mkdir -p /run/postgresql
 chown postgres:postgres /run/postgresql
@@ -75,33 +76,33 @@ chmod 755 /etc/profile.d/guacamole.sh
 echo "[$(TZ="GMT-9" date '+%Y-%m-%d %H:%M:%S')] ==> OK"
 echo
 
-echo "[$(TZ="GMT-9" date '+%Y-%m-%d %H:%M:%S')] ==> Installing fonts"
-mkdir -p /build/fonts
-cd /build/fonts
-wget --no-check-certificate -q -O BitstreamVeraSansMono.ttf http://cfile8.uf.tistory.com/attach/115363354F386D452327BB
-wget --no-check-certificate -q -O NanumFontSetup_TTF_GOTHIC_hangeulcamp.exe http://cdn.naver.com/naver/NanumFont/setup/NanumFontSetup_TTF_GOTHIC_hangeulcamp.exe
-wget --no-check-certificate -q -O NanumFontSetup_TTF_MYUNGJO_hangeulcamp.exe http://cdn.naver.com/naver/NanumFont/setup/NanumFontSetup_TTF_MYUNGJO_hangeulcamp.exe
-nanumgothiccoding_version="$(wget --no-check-certificate -q -O - https://api.github.com/repos/naver/nanumfont/releases | grep '^    "name":' | grep -v 'beta' | head -1 | sed -e 's/^.*"name": "NanumGothicCoding \(.*\)".*$/\1/g')"
-wget --no-check-certificate -q -O NanumGothicCoding.zip https://github.com/naver/nanumfont/releases/download/VER${nanumgothiccoding_version}/NanumGothicCoding-${nanumgothiccoding_version}.zip
-7z x -y NanumFontSetup_TTF_GOTHIC_hangeulcamp.exe "\$WINDIR/Fonts" > /dev/null
-7z x -y NanumFontSetup_TTF_MYUNGJO_hangeulcamp.exe "\$WINDIR/Fonts" > /dev/null
-7z x -y NanumGothicCoding.zip "*.ttf" > /dev/null
-mkdir -p "/usr/share/fonts/TTF"
-cp "\$WINDIR/Fonts/"*.ttf /usr/share/fonts/TTF/
-cp *.ttf /usr/share/fonts/TTF/
-mkdir -p /etc/fonts/conf.d/
-ln -s /usr/local/etc/10-antialias.conf /etc/fonts/conf.d/
-ln -s /usr/local/etc/10-hinting.conf /etc/fonts/conf.d/
-ln -s /usr/local/etc/30-cjk-aliases.conf /etc/fonts/conf.d/
-ln -s /usr/local/etc/90-fonts-nanum.conf /etc/fonts/conf.d/
-ln -s /usr/local/etc/90-fonts-nanum-coding.conf /etc/fonts/conf.d/
-fc-cache -f -s > /dev/null
-mkfontscale /usr/share/fonts/TTF
-mkfontdir /usr/share/fonts/TTF
-cd /
-rm -rf /build
-echo "[$(TZ="GMT-9" date '+%Y-%m-%d %H:%M:%S')] ==> OK"
-echo
+#echo "[$(TZ="GMT-9" date '+%Y-%m-%d %H:%M:%S')] ==> Installing fonts"
+#mkdir -p /build/fonts
+#cd /build/fonts
+#wget --no-check-certificate -q -O BitstreamVeraSansMono.ttf http://cfile8.uf.tistory.com/attach/115363354F386D452327BB
+#wget --no-check-certificate -q -O NanumFontSetup_TTF_GOTHIC_hangeulcamp.exe http://cdn.naver.com/naver/NanumFont/setup/NanumFontSetup_TTF_GOTHIC_hangeulcamp.exe
+#wget --no-check-certificate -q -O NanumFontSetup_TTF_MYUNGJO_hangeulcamp.exe http://cdn.naver.com/naver/NanumFont/setup/NanumFontSetup_TTF_MYUNGJO_hangeulcamp.exe
+#nanumgothiccoding_version="$(wget --no-check-certificate -q -O - https://api.github.com/repos/naver/nanumfont/releases | grep '^    "name":' | grep -v 'beta' | head -1 | sed -e 's/^.*"name": "NanumGothicCoding \(.*\)".*$/\1/g')"
+#wget --no-check-certificate -q -O NanumGothicCoding.zip https://github.com/naver/nanumfont/releases/download/VER${nanumgothiccoding_version}/NanumGothicCoding-${nanumgothiccoding_version}.zip
+#7z x -y NanumFontSetup_TTF_GOTHIC_hangeulcamp.exe "\$WINDIR/Fonts" > /dev/null
+#7z x -y NanumFontSetup_TTF_MYUNGJO_hangeulcamp.exe "\$WINDIR/Fonts" > /dev/null
+#7z x -y NanumGothicCoding.zip "*.ttf" > /dev/null
+#mkdir -p "/usr/share/fonts/TTF"
+#cp "\$WINDIR/Fonts/"*.ttf /usr/share/fonts/TTF/
+#cp *.ttf /usr/share/fonts/TTF/
+#mkdir -p /etc/fonts/conf.d/
+#ln -s /usr/local/etc/10-antialias.conf /etc/fonts/conf.d/
+#ln -s /usr/local/etc/10-hinting.conf /etc/fonts/conf.d/
+#ln -s /usr/local/etc/30-cjk-aliases.conf /etc/fonts/conf.d/
+#ln -s /usr/local/etc/90-fonts-nanum.conf /etc/fonts/conf.d/
+#ln -s /usr/local/etc/90-fonts-nanum-coding.conf /etc/fonts/conf.d/
+#fc-cache -f -s > /dev/null
+#mkfontscale /usr/share/fonts/TTF
+#mkfontdir /usr/share/fonts/TTF
+#cd /
+#rm -rf /build
+#echo "[$(TZ="GMT-9" date '+%Y-%m-%d %H:%M:%S')] ==> OK"
+#echo
 
 echo "[$(TZ="GMT-9" date '+%Y-%m-%d %H:%M:%S')] ==> Uninstalling unnecessary packages"
 docker-install -d -c ${PKG_DEV}
