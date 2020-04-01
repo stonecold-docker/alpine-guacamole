@@ -4,7 +4,6 @@ set -e
 
 echo "[$(TZ="GMT-9" date '+%Y-%m-%d %H:%M:%S')] ==> Installing required packages"
 PKG_LIB="goreman su-exec guacamole-server guacamole-server-dev jetty-runner postgresql java-postgresql-jdbc ttf-dejavu"
-#PKG_DEV="p7zip mkfontscale"
 PKG_DEV="p7zip"
 docker-install -r -u ${PKG_LIB} ${PKG_DEV}
 mkdir -p /run/postgresql
