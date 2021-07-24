@@ -1,16 +1,16 @@
 # alpine-guacamole
-![Docker Pulls](https://img.shields.io/docker/pulls/forumi0721/forumi0721-guacamole)
-![Docker Stars](https://img.shields.io/docker/stars/forumi0721/forumi0721-guacamole)
+![Docker Pulls](https://img.shields.io/docker/pulls/forumi0721/alpine-guacamole)
+![Docker Stars](https://img.shields.io/docker/stars/forumi0721/alpine-guacamole)
 
 
 
 ----------------------------------------
 ### x64
-![Docker Image Version](https://img.shields.io/docker/v/forumi0721/forumi0721-guacamole/latest)
-![Docker Image Size](https://img.shields.io/docker/image-size/forumi0721/forumi0721-guacamole/latest)
+![Docker Image Version](https://img.shields.io/docker/v/forumi0721/alpine-guacamole/latest)
+![Docker Image Size](https://img.shields.io/docker/image-size/forumi0721/alpine-guacamole/latest)
 ### aarch64
-![Docker Image Version](https://img.shields.io/docker/v/forumi0721/forumi0721-guacamole/aarch64)
-![Docker Image Size](https://img.shields.io/docker/image-size/forumi0721/forumi0721-guacamole/aarch64)
+![Docker Image Version](https://img.shields.io/docker/v/forumi0721/alpine-guacamole/aarch64)
+![Docker Image Size](https://img.shields.io/docker/image-size/forumi0721/alpine-guacamole/aarch64)
 
 
 
