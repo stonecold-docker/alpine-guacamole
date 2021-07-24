@@ -1,23 +1,16 @@
 # alpine-guacamole
+![Docker Pulls](https://img.shields.io/docker/pulls/forumi0721/forumi0721-guacamole)
+![Docker Stars](https://img.shields.io/docker/stars/forumi0721/forumi0721-guacamole)
 
-#### [alpine-x64-guacamole](https://hub.docker.com/r/forumi0721alpinex64/alpine-x64-guacamole/)
-![Docker Image Version (tag latest semver)](https://img.shields.io/docker/v/forumi0721alpinex64/alpine-x64-guacamole/latest)
-![Docker Image Size (tag)](https://img.shields.io/docker/image-size/forumi0721alpinex64/alpine-x64-guacamole/latest)
-![MicroBadger Layers (tag)](https://img.shields.io/microbadger/layers/forumi0721alpinex64/alpine-x64-guacamole/latest)
-![Docker Pulls](https://img.shields.io/docker/pulls/forumi0721alpinex64/alpine-x64-guacamole)
-![Docker Stars](https://img.shields.io/docker/stars/forumi0721alpinex64/alpine-x64-guacamole)
-#### [alpine-aarch64-guacamole](https://hub.docker.com/r/forumi0721alpineaarch64/alpine-aarch64-guacamole/)
-![Docker Image Version (tag latest semver)](https://img.shields.io/docker/v/forumi0721alpineaarch64/alpine-aarch64-guacamole/latest)
-![Docker Image Size (tag)](https://img.shields.io/docker/image-size/forumi0721alpineaarch64/alpine-aarch64-guacamole/latest)
-![MicroBadger Layers (tag)](https://img.shields.io/microbadger/layers/forumi0721alpineaarch64/alpine-aarch64-guacamole/latest)
-![Docker Pulls](https://img.shields.io/docker/pulls/forumi0721alpineaarch64/alpine-aarch64-guacamole)
-![Docker Stars](https://img.shields.io/docker/stars/forumi0721alpineaarch64/alpine-aarch64-guacamole)
-#### [alpine-armhf-guacamole](https://hub.docker.com/r/forumi0721alpinearmhf/alpine-armhf-guacamole/)
-![Docker Image Version (tag latest semver)](https://img.shields.io/docker/v/forumi0721alpinearmhf/alpine-armhf-guacamole/latest)
-![Docker Image Size (tag)](https://img.shields.io/docker/image-size/forumi0721alpinearmhf/alpine-armhf-guacamole/latest)
-![MicroBadger Layers (tag)](https://img.shields.io/microbadger/layers/forumi0721alpinearmhf/alpine-armhf-guacamole/latest)
-![Docker Pulls](https://img.shields.io/docker/pulls/forumi0721alpinearmhf/alpine-armhf-guacamole)
-![Docker Stars](https://img.shields.io/docker/stars/forumi0721alpinearmhf/alpine-armhf-guacamole)
+
+
+----------------------------------------
+### x64
+![Docker Image Version](https://img.shields.io/docker/v/forumi0721/forumi0721-guacamole/latest)
+![Docker Image Size](https://img.shields.io/docker/image-size/forumi0721/forumi0721-guacamole/latest)
+### aarch64
+![Docker Image Version](https://img.shields.io/docker/v/forumi0721/forumi0721-guacamole/aarch64)
+![Docker Image Size](https://img.shields.io/docker/image-size/forumi0721/forumi0721-guacamole/aarch64)
 
 
 
@@ -25,7 +18,7 @@
 #### Description
 
 * Distribution : [Alpine Linux](https://alpinelinux.org/)
-* Architecture : x64,aarch64,armhf
+* Architecture : x64,aarch64
 * Appplication : [Guacamole](https://guacamole.apache.org/)
     - Apache Guacamole is a clientless remote desktop gateway. It supports standard protocols like VNC, RDP, and SSH.
 
@@ -38,7 +31,7 @@
 docker run -d \
            -p 8080:8080/tcp \
            -v /conf.d:/conf.d \
-           forumi0721alpine[ARCH]/alpine-[ARCH]-guacamole:latest
+           forumi0721/alpine-guacamole:[ARCH_TAG]
 ```
 
 
