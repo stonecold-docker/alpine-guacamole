@@ -20,7 +20,7 @@ echo "[$(TZ="GMT-9" date '+%Y-%m-%d %H:%M:%S')] ==> OK"
 echo
 
 echo "[$(TZ="GMT-9" date '+%Y-%m-%d %H:%M:%S')] ==> Setting build environment"
-GUACAMOLE_VERSION="$(wget --no-check-certificate -q -O - https://guacamole.apache.org/releases/ | grep '/releases/[0-9]' | head -1 | sed -e 's/^.*<a href="[^>]*">\([^<]*\)<\/a>.*$/\1/g')"
+GUACAMOLE_VERSION="$(wget --no-check-certificate -q -O - https://guacamole.apache.org/releases/ | grep '/releases/[0-9]' | head -1 | sed -e 's/^.*\/releases\/\([^\/]*\)\/.*$/\1/g')"
 GUACAMOLE_URL="https://mirror.navercorp.com/apache/guacamole/${GUACAMOLE_VERSION}/binary/guacamole-${GUACAMOLE_VERSION}.war"
 GUACAMOLE_AUTH_URL="https://mirror.navercorp.com/apache/guacamole/${GUACAMOLE_VERSION}/binary/guacamole-auth-jdbc-${GUACAMOLE_VERSION}.tar.gz"
 echo "GUACAMOLE_VERSION  : ${GUACAMOLE_VERSION}"
