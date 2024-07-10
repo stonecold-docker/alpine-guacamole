@@ -20,9 +20,11 @@ echo "[$(TZ="GMT-9" date '+%Y-%m-%d %H:%M:%S')] ==> OK"
 echo
 
 echo "[$(TZ="GMT-9" date '+%Y-%m-%d %H:%M:%S')] ==> Setting build environment"
+#MIRROR=https://mirror.navercorp.com/apache/guacamole
+MIRROR=https://dlcdn.apache.org/guacamole
 GUACAMOLE_VERSION="$(wget --no-check-certificate -q -O - https://guacamole.apache.org/releases/ | grep '/releases/[0-9]' | head -1 | sed -e 's/^.*\/releases\/\([^\/]*\)\/.*$/\1/g')"
-GUACAMOLE_URL="https://mirror.navercorp.com/apache/guacamole/${GUACAMOLE_VERSION}/binary/guacamole-${GUACAMOLE_VERSION}.war"
-GUACAMOLE_AUTH_URL="https://mirror.navercorp.com/apache/guacamole/${GUACAMOLE_VERSION}/binary/guacamole-auth-jdbc-${GUACAMOLE_VERSION}.tar.gz"
+GUACAMOLE_URL="${MIRROR}/${GUACAMOLE_VERSION}/binary/guacamole-${GUACAMOLE_VERSION}.war"
+GUACAMOLE_AUTH_URL="${MIRROR}/${GUACAMOLE_VERSION}/binary/guacamole-auth-jdbc-${GUACAMOLE_VERSION}.tar.gz"
 echo "GUACAMOLE_VERSION  : ${GUACAMOLE_VERSION}"
 echo "GUACAMOLE_URL      : ${GUACAMOLE_URL}"
 echo "GUACAMOLE_AUTH_URL : ${GUACAMOLE_AUTH_URL}"
@@ -42,7 +44,7 @@ cat << EOF > /app/guacamole/schema/003-create-db-user.sql
 CREATE USER guacamole_user WITH PASSWORD 'some_password';
 GRANT SELECT,INSERT,UPDATE,DELETE ON ALL TABLES IN SCHEMA public TO guacamole_user;
 GRANT SELECT,USAGE ON ALL SEQUENCES IN SCHEMA public TO guacamole_user;
-EOF
+EO
 cat << EOF > /app/guacamole/guacamole.properties
 # Hostname and port of guacamole proxy
 guacd-hostname: localhost
