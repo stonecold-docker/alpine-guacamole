@@ -2,16 +2,8 @@
 
 set -e
 
-if [ -z "$(grep 'https://mirror.xtom.com.hk/alpine/v3.14/main/' /etc/apk/repositories)" ]; then
-	echo "https://mirror.xtom.com.hk/alpine/v3.14/main" >> /etc/apk/repositories
-fi
-
-if [ "$(uname -m)" = "aarch64" -a -z "$(grep 'https://mirror.xtom.com.hk/alpine/v3.17/community/' /etc/apk/repositories)" ]; then
-	echo "https://mirror.xtom.com.hk/alpine/v3.17/community" >> /etc/apk/repositories
-fi
-
 echo "[$(TZ="GMT-9" date '+%Y-%m-%d %H:%M:%S')] ==> Installing required packages"
-PKG_LIB="goreman su-exec guacamole-server guacamole-server-dev openjdk8-jre-base jetty-runner postgresql java-postgresql-jdbc ttf-dejavu"
+PKG_LIB="goreman su-exec guacamole-server guacamole-server-dev openjdk8-jre-base jetty-runner postgresql java-postgresql-jdbc mkfontscale font-noto font-noto-cjk"
 PKG_DEV="p7zip"
 docker-install -r -u ${PKG_LIB} ${PKG_DEV}
 mkdir -p /run/postgresql
@@ -44,7 +36,7 @@ cat << EOF > /app/guacamole/schema/003-create-db-user.sql
 CREATE USER guacamole_user WITH PASSWORD 'some_password';
 GRANT SELECT,INSERT,UPDATE,DELETE ON ALL TABLES IN SCHEMA public TO guacamole_user;
 GRANT SELECT,USAGE ON ALL SEQUENCES IN SCHEMA public TO guacamole_user;
-EO
+EOF
 cat << EOF > /app/guacamole/guacamole.properties
 # Hostname and port of guacamole proxy
 guacd-hostname: localhost
@@ -120,6 +112,8 @@ echo
 
 echo "[$(TZ="GMT-9" date '+%Y-%m-%d %H:%M:%S')] ==> Setting basic configurations"
 mkdir -p /conf.d /conf.d/postgresql
+sed -i -e 's/^[#]\?bind_host = .*$/bind_host = 127.0.0.1/g' /etc/guacamole/guacd.conf
+sed -i -e 's/^[#]\?bind_port = .*$/bind_port = 4822/g' /etc/guacamole/guacd.conf
 echo "[$(TZ="GMT-9" date '+%Y-%m-%d %H:%M:%S')] ==> OK"
 echo
 
