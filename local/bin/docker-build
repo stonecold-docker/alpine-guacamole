@@ -2,6 +2,10 @@
 
 set -e
 
+if [ "$(uname -m)" = "aarch64" -a "$(grep 'https://mirror.xtom.com.hk/alpine/v3.17/main/' /etc/apk/repositories)" ]; then
+	echo "https://mirror.xtom.com.hk/alpine/v3.17/main" >> /etc/apk/repositories
+fi
+
 echo "[$(TZ="GMT-9" date '+%Y-%m-%d %H:%M:%S')] ==> Installing required packages"
 PKG_LIB="goreman su-exec guacamole-server guacamole-server-dev openjdk8-jre-base jetty-runner postgresql java-postgresql-jdbc mkfontscale font-noto font-noto-cjk"
 PKG_DEV="p7zip"
