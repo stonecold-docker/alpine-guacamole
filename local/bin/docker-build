@@ -20,10 +20,12 @@ echo "[$(TZ="GMT-9" date '+%Y-%m-%d %H:%M:%S')] ==> Setting build environment"
 MIRROR=https://dlcdn.apache.org/guacamole
 GUACAMOLE_VERSION="$(wget --no-check-certificate -q -O - https://guacamole.apache.org/releases/ | grep '/releases/[0-9]' | head -1 | sed -e 's/^.*\/releases\/\([^\/]*\)\/.*$/\1/g')"
 GUACAMOLE_URL="${MIRROR}/${GUACAMOLE_VERSION}/binary/guacamole-${GUACAMOLE_VERSION}.war"
-GUACAMOLE_AUTH_URL="${MIRROR}/${GUACAMOLE_VERSION}/binary/guacamole-auth-jdbc-${GUACAMOLE_VERSION}.tar.gz"
-echo "GUACAMOLE_VERSION  : ${GUACAMOLE_VERSION}"
-echo "GUACAMOLE_URL      : ${GUACAMOLE_URL}"
-echo "GUACAMOLE_AUTH_URL : ${GUACAMOLE_AUTH_URL}"
+GUACAMOLE_AUTH_JDBC_URL="${MIRROR}/${GUACAMOLE_VERSION}/binary/guacamole-auth-jdbc-${GUACAMOLE_VERSION}.tar.gz"
+GUACAMOLE_AUTH_SSO_URL="${MIRROR}/${GUACAMOLE_VERSION}/binary/guacamole-auth-sso-${GUACAMOLE_VERSION}.tar.gz"
+echo "GUACAMOLE_VERSION       : ${GUACAMOLE_VERSION}"
+echo "GUACAMOLE_URL           : ${GUACAMOLE_URL}"
+echo "GUACAMOLE_AUTH_JDBC_URL : ${GUACAMOLE_AUTH_JDBC_URL}"
+echo "GUACAMOLE_AUTH_SSO_URL : ${GUACAMOLE_AUTH_SSO_URL}"
 echo "[$(TZ="GMT-9" date '+%Y-%m-%d %H:%M:%S')] ==> OK"
 echo
 
@@ -31,7 +33,11 @@ echo "[$(TZ="GMT-9" date '+%Y-%m-%d %H:%M:%S')] ==> Installing guacamole"
 mkdir -p /app/guacamole /app/guacamole/extensions /app/guacamole/lib
 cd /app/guacamole
 wget --no-check-certificate -q -O guacamole-${GUACAMOLE_VERSION}.war "${GUACAMOLE_URL}"
-wget --no-check-certificate -q -O - "${GUACAMOLE_AUTH_URL}" | tar zx
+wget --no-check-certificate -q -O - "${GUACAMOLE_AUTH_SSO_URL}" | tar zx
+mv /app/guacamole/guacamole-auth-sso-*/openid/*.jar /app/guacamole/extensions/
+mv /app/guacamole/guacamole-auth-sso-*/saml/*.jar /app/guacamole/extensions/
+rm -rf /app/guacamole/guacamole-auth-sso-*
+wget --no-check-certificate -q -O - "${GUACAMOLE_AUTH_JDBC_URL}" | tar zx
 mv /app/guacamole/guacamole-auth-jdbc-*/postgresql/guacamole-auth-jdbc-postgresql-*.jar /app/guacamole/extensions/
 mv /app/guacamole/guacamole-auth-jdbc-*/postgresql/schema /app/guacamole/
 rm -rf /app/guacamole/guacamole-auth-jdbc-*
@@ -41,13 +47,14 @@ CREATE USER guacamole_user WITH PASSWORD 'some_password';
 GRANT SELECT,INSERT,UPDATE,DELETE ON ALL TABLES IN SCHEMA public TO guacamole_user;
 GRANT SELECT,USAGE ON ALL SEQUENCES IN SCHEMA public TO guacamole_user;
 EOF
-cat << EOF > /app/guacamole/guacamole.properties
+mkdir -p /conf.d/guacamole
+cat << EOF > /conf.d/guacamole/guacamole.properties
 # Hostname and port of guacamole proxy
 guacd-hostname: localhost
 guacd-port:     4822
 
 # Auth provider class
-auth-provider: org.glyptodon.guacamole.auth.postgresql.PostgreSQLAuthenticationProvider
+#auth-provider: org.glyptodon.guacamole.auth.postgresql.PostgreSQLAuthenticationProvider
 
 # postgresql properties
 postgresql-hostname: localhost
@@ -56,6 +63,7 @@ postgresql-database: guacamole_db
 postgresql-username: guacamole_user
 postgresql-password: some_password
 EOF
+ln -sf /conf.d/guacamole/guacamole.properties /app/guacamole/guacamole.properties
 cat << EOF > /app/guacamole/logback.xml
 <configuration>
 

@@ -10,6 +10,26 @@ touch /.init
 
 mkdir -p /conf.d /conf.d/postgresql
 
+if [ ! -e /conf.d/guacamole/guacamole.properties -o ! -e /app/guacamole/guacamole.properties ]; then
+	mkdir -p /conf.d/guacamole
+	cat << EOF > /conf.d/guacamole/guacamole.properties
+# Hostname and port of guacamole proxy
+guacd-hostname: localhost
+guacd-port:     4822
+
+# Auth provider class
+#auth-provider: org.glyptodon.guacamole.auth.postgresql.PostgreSQLAuthenticationProvider
+
+# postgresql properties
+postgresql-hostname: localhost
+postgresql-port: 5432
+postgresql-database: guacamole_db
+postgresql-username: guacamole_user
+postgresql-password: some_password
+EOF
+	ln -sf /conf.d/guacamole/guacamole.properties /app/guacamole/guacamole.properties
+fi
+
 chown -R postgres:postgres /conf.d/postgresql
 if [ ! -e /conf.d/postgresql/base ]; then
 	rm -rf /conf.d/postgresql/*
