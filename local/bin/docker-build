@@ -22,10 +22,12 @@ GUACAMOLE_VERSION="$(wget --no-check-certificate -q -O - https://guacamole.apach
 GUACAMOLE_URL="${MIRROR}/${GUACAMOLE_VERSION}/binary/guacamole-${GUACAMOLE_VERSION}.war"
 GUACAMOLE_AUTH_JDBC_URL="${MIRROR}/${GUACAMOLE_VERSION}/binary/guacamole-auth-jdbc-${GUACAMOLE_VERSION}.tar.gz"
 GUACAMOLE_AUTH_SSO_URL="${MIRROR}/${GUACAMOLE_VERSION}/binary/guacamole-auth-sso-${GUACAMOLE_VERSION}.tar.gz"
-echo "GUACAMOLE_VERSION       : ${GUACAMOLE_VERSION}"
-echo "GUACAMOLE_URL           : ${GUACAMOLE_URL}"
-echo "GUACAMOLE_AUTH_JDBC_URL : ${GUACAMOLE_AUTH_JDBC_URL}"
-echo "GUACAMOLE_AUTH_SSO_URL : ${GUACAMOLE_AUTH_SSO_URL}"
+#GUACAMOLE_AUTH_HEADER_URL="${MIRROR}/${GUACAMOLE_VERSION}/binary/guacamole-auth-header-${GUACAMOLE_VERSION}.tar.gz"
+echo "GUACAMOLE_VERSION         : ${GUACAMOLE_VERSION}"
+echo "GUACAMOLE_URL             : ${GUACAMOLE_URL}"
+echo "GUACAMOLE_AUTH_JDBC_URL   : ${GUACAMOLE_AUTH_JDBC_URL}"
+echo "GUACAMOLE_AUTH_SSO_URL    : ${GUACAMOLE_AUTH_SSO_URL}"
+#echo "GUACAMOLE_AUTH_HEADER URL : ${GUACAMOLE_AUTH_HEADER_URL}"
 echo "[$(TZ="GMT-9" date '+%Y-%m-%d %H:%M:%S')] ==> OK"
 echo
 
@@ -34,11 +36,13 @@ mkdir -p /app/guacamole /app/guacamole/extensions /app/guacamole/lib
 cd /app/guacamole
 wget --no-check-certificate -q -O guacamole-${GUACAMOLE_VERSION}.war "${GUACAMOLE_URL}"
 wget --no-check-certificate -q -O - "${GUACAMOLE_AUTH_SSO_URL}" | tar zx
-mv /app/guacamole/guacamole-auth-sso-*/openid/*.jar /app/guacamole/extensions/
-mv /app/guacamole/guacamole-auth-sso-*/saml/*.jar /app/guacamole/extensions/
+mv /app/guacamole/guacamole-auth-sso-*/openid/*.jar /app/guacamole/extensions/00-guacamole-auth-sso-openid.jar
 rm -rf /app/guacamole/guacamole-auth-sso-*
+#wget --no-check-certificate -q -O - "${GUACAMOLE_AUTH_HEADER_URL}" | tar zx
+#mv /app/guacamole/guacamole-auth-header-*/*.jar /app/guacamole/extensions/
+#rm -rf /app/guacamole/guacamole-auth-header-*
 wget --no-check-certificate -q -O - "${GUACAMOLE_AUTH_JDBC_URL}" | tar zx
-mv /app/guacamole/guacamole-auth-jdbc-*/postgresql/guacamole-auth-jdbc-postgresql-*.jar /app/guacamole/extensions/
+mv /app/guacamole/guacamole-auth-jdbc-*/postgresql/guacamole-auth-jdbc-postgresql-*.jar /app/guacamole/extensions/01-guacamole-auth-jdbc-postgresql.jar
 mv /app/guacamole/guacamole-auth-jdbc-*/postgresql/schema /app/guacamole/
 rm -rf /app/guacamole/guacamole-auth-jdbc-*
 ln -sf /usr/share/java/postgresql-jdbc.jar /app/guacamole/lib/
