@@ -7,7 +7,7 @@ if [ "$(uname -m)" = "aarch64" -a -z "$(grep 'https://mirror.xtom.com.hk/alpine/
 fi
 
 echo "[$(TZ="GMT-9" date '+%Y-%m-%d %H:%M:%S')] ==> Installing required packages"
-PKG_LIB="goreman su-exec guacamole-server guacamole-server-dev openjdk8-jre-base jetty-runner postgresql java-postgresql-jdbc mkfontscale font-noto font-noto-cjk"
+PKG_LIB="goreman su-exec guacamole-server guacamole-server-dev openjdk8-jre-base jetty-runner postgresql17 postgresql17-client java-postgresql-jdbc mkfontscale font-noto font-noto-cjk"
 PKG_DEV="p7zip"
 docker-install -r -u ${PKG_LIB} ${PKG_DEV}
 mkdir -p /run/postgresql
